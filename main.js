@@ -109,7 +109,7 @@ function mostrarPaginador(totalPokemones, paginaActual, urlSiguiente, urlAnterio
     $paginador.addEventListener('click', manejarCambioPagina);
 }
 
-function cambiarPagina(pagina) {
+async function cambiarPagina(pagina) {
     const POKEMONES_POR_PAGINA = 20;
     let paginaActual;
     let offset;
@@ -125,17 +125,17 @@ function cambiarPagina(pagina) {
         paginaActual = Math.ceil(offset / limit) + 1;
     }
 
-    return obtenerPokemones(offset, limit).then((respuesta) => {
+    try {
+        const respuesta = await obtenerPokemones(offset, limit);
         const {
             results: pokemones, count: totalPokemones, next: urlSiguiente, previous: urlAnterior
         } = respuesta;
         
-        const promesasDetalles = pokemones.map(pokemon => {
+        const detallesPokemones = await Promise.all(pokemones.map(async (pokemon) => {
             const pokemonId = pokemon.url.split("/").slice(-2, -1)[0];
-            return obtenerDetallesPokemon(pokemonId);
-        });
+            return await obtenerDetallesPokemon(pokemonId);
+        }));
 
-    return Promise.all(promesasDetalles).then(detallesPokemones => {
         const datosPokemones = detallesPokemones.map(data => ({
             id: data.id,
             nombre: data.name,
@@ -143,21 +143,29 @@ function cambiarPagina(pagina) {
             tipos: data.types.map(tipo => tipo.type.name)
         }));
 
-    mostrarPokemones(datosPokemones); 
-    mostrarPaginador(totalPokemones, paginaActual, urlSiguiente, urlAnterior, manejarCambioPagina);
-    });
-    });
+        mostrarPokemones(datosPokemones); 
+        mostrarPaginador(totalPokemones, paginaActual, urlSiguiente, urlAnterior, manejarCambioPagina);
+    } catch (error) {
+        console.error("Error al cambiar de página:", error);
+    }
 }
 
-function obtenerPokemones(offset = 0, limit = 20) {
-    return fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
-        .then(respuesta => respuesta.json());
+async function obtenerPokemones(offset = 0, limit = 20) {
+    try {
+        const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al obtener pokemones:", error);
+    }
 }
 
-function obtenerDetallesPokemon(pokemonId) {
-    return fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`)
-        .then(respuesta => respuesta.json())
-        .catch(error => console.error("Error al obtener detalles del Pokémon:", error));
+async function obtenerDetallesPokemon(pokemonId) {
+    try{
+        const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al obtener detalles del pokemon:", error);
+    }
 }
 
 //crea las cartas en la pantalla
