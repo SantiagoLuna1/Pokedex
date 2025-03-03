@@ -22,5 +22,5 @@ Este proyecto permite visualizar Pokémon en un formato de lista con informació
 
 ## Imágenes 
 
-![Pokedex](./imagenes/pokedex.png)
-![Pokedex](./imagenes/pokedex2.png)
+![Pokedex](src/imagenes/pokedex.png)
+![Pokedex](src/imagenes/pokedex2.png)

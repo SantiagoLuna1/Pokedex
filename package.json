@@ -1,4 +1,22 @@
 {
+  "name": "pokedex",
+  "version": "1.0.0",
+  "description": "Una Pokédex interactiva hecha en JavaScript que muestra información de Pokémon utilizando la [API pública de PokéAPI](https://pokeapi.co/).",
+  "homepage": "https://github.com/SantiagoLuna1/Pokedex#readme",
+  "bugs": {
+    "url": "https://github.com/SantiagoLuna1/Pokedex/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SantiagoLuna1/Pokedex.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "bootstrap": "^5.3.3"
   },
