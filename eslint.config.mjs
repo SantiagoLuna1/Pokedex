@@ -12,6 +12,7 @@ export default [
   {
     languageOptions: {
       globals: globals.browser,
+      global: globals.cypress,
     },
   },
   pluginJs.configs.recommended,
