@@ -1,17 +1,10 @@
 export async function obtenerPokemones(offset = 0, limit = 20) {
-    try {
-        const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-        return await respuesta.json();
-    } catch (error) {
-        console.error("Error al obtener pokemones:", error);
-    }
+    return (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)).json();
 }
 
 export async function obtenerDetallesPokemon(pokemonId) {
-    try{
-        const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
-        return await respuesta.json();
-    } catch (error) {
-        console.error("Error al obtener detalles del pokemon:", error);
+    if(pokemonId === undefined) {
+        throw new Error('Se necesita un identificador para cargar un pokemón');
     }
+        return (await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`)).json();
 }

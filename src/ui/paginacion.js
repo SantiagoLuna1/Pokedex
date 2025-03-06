@@ -1,18 +1,4 @@
-//obtiene el offset y el limit
-export function obtenerParametrosDeURL(url) {
-    let offset;
-    let limit;
-    try {
-        offset = /offset=([0-9]+)/gi.exec(url).pop();
-        limit = /limit=([0-9]+)/gi.exec(url).pop();
-    } catch {
-        offset = undefined;
-        limit = undefined;
-    }
-    return { offset, limit };
-}
-
-function crearItemPaginador(texto, url = '#') {
+export function crearItemPaginador(texto, url = '#') {
     const $item = document.createElement('li');
     const $link = document.createElement('a');
     $item.className = 'page-item';
@@ -48,7 +34,8 @@ export function mostrarPaginador(totalPokemones, paginaActual, urlSiguiente, url
     const totalPaginas = Math.ceil(totalPokemones / POKEMONES_POR_PAGINA);
 
     const $paginaAnterior = crearItemPaginador('Anterior', urlAnterior);
-    
+    $paginaAnterior.classList.add('boton-anterior');
+
     if(urlAnterior) {
         $paginaAnterior.classList.remove('disabled');
     } else {
@@ -77,6 +64,8 @@ export function mostrarPaginador(totalPokemones, paginaActual, urlSiguiente, url
     });
 
     const $paginaSiguiente = crearItemPaginador('Siguiente', urlSiguiente);
+    $paginaSiguiente.classList.add('boton-siguiente');
+
     if(urlSiguiente) {
         $paginaSiguiente.classList.remove('disabled');
     } else {
