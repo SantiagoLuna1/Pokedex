@@ -6,7 +6,7 @@ export default [
   {
     files: ["**/*.js"],
     languageOptions: {
-      sourceType: "module",  // Esto asegura que el código se trata como módulo ECMAScript
+      sourceType: "module", 
     },
   },
   {

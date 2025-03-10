@@ -46,3 +46,39 @@ describe('mostrarPaginador', () => {
         expect(botonSiguiente.classList.contains('disabled')).toBe(true);
     });
 });
+
+describe('manejarCambioPagina', () => {
+    it('debe llamar a cambiarPagina con el número de página seleccionada', () => {
+        const cambiarPagina = jest.fn();
+
+        const e = {
+            preventDefault: jest.fn(),
+            target: {
+                getAttribute: jest.fn().mockReturnValue('#'), 
+                dataset: { pagina: '2' },
+            },
+        };
+
+        manejarCambioPagina(e, cambiarPagina);
+
+        expect(e.preventDefault).toHaveBeenCalled();
+        expect(cambiarPagina).toHaveBeenCalledWith(2);
+        });
+
+    it('debe llamar a cambiarPagina con el href', () => {
+        const cambiarPagina = jest.fn();
+
+        const e = {
+            preventDefault: jest.fn(),
+            target: {
+                getAttribute: jest.fn().mockReturnValue('https://asd.com'), //diferente de #
+                dataset: { pagina: '2' },
+            },
+        };
+
+        manejarCambioPagina(e, cambiarPagina);
+
+        expect(e.preventDefault).toHaveBeenCalled();
+        expect(cambiarPagina).toHaveBeenCalledWith('https://asd.com');
+    });
+});

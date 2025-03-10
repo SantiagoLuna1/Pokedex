@@ -1,4 +1,5 @@
 import { obtenerPokemones } from "../api/pokedex.js";
+import { mapearListadoPokemones } from "../clases_y_mapeadores/pokemon.js";
 
 function obtenerKeyPokemones(offset, limit) {
     return `pokemones_${offset}_${limit}`;
@@ -24,12 +25,14 @@ function cargarPokemonesDeLocalStorage(offset = 0, limit = 20) {
 export async function cargarPokemones(offset = 0, limit = 20) {
     try{
         //lo busca en el localstorage
-        return cargarPokemonesDeLocalStorage(offset, limit);
+        const localStorage = cargarPokemonesDeLocalStorage(offset, limit);
+        return mapearListadoPokemones(localStorage); //para que me devuelva los datos mapeados desde localstorage
     } catch {
         //si no lo consigue lo pide desde la API
         const pokemones = await obtenerPokemones (offset, limit);
+        const listadoPokemones = mapearListadoPokemones(pokemones);
         //y lo guarda en localstorage, entonces la proxima vez lo encuentra directo en localstorage
-        guardarPokemonesEnLocalStorage(offset, limit, pokemones);
-        return pokemones;
+        guardarPokemonesEnLocalStorage(offset, limit, listadoPokemones);
+        return listadoPokemones;
     }
 }
